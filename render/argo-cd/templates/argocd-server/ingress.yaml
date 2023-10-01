@@ -1,0 +1,36 @@
+---
+# Source: argo-cd/templates/argocd-server/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: release-name-argocd-server
+  namespace: "default"
+  labels:
+    helm.sh/chart: argo-cd-5.46.4
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/component: server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.8.4"
+  annotations:
+    cert-manager.io/issuer: "selfsigned - default - adds 'cert-manager.io/issuer' - cluster - adds 'cert-manager.io/cluster-issuer' - disabled - disables cert-manager annotations"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "argocd.master.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: release-name-argocd-server
+                port:
+                  number: 80
+  tls:
+    - hosts:
+      - argocd.master.com
+      secretName: argocd-dashboard-certs

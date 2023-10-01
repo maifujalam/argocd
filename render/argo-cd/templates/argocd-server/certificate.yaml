@@ -1,0 +1,31 @@
+---
+# Source: argo-cd/templates/argocd-server/certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: release-name-argocd-server
+  namespace: "default"
+  labels:
+    helm.sh/chart: argo-cd-5.46.4
+    app.kubernetes.io/name: argocd-server
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/component: server
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: argocd
+    app.kubernetes.io/version: "v2.8.4"
+spec:
+  secretName: argocd-server-tls
+  commonName: "argocd.master.com"
+  dnsNames:
+    - "argocd.master.com"
+    - "master"
+    - "localhost"
+  issuerRef:
+    group: "cert-manager.io"
+    kind: "Issuer"
+    name: "ingress-nginx-self-signed-issuer"
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    rotationPolicy: Never
+    size: 2048

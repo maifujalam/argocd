@@ -243,7 +243,7 @@ configs:
 
     ## Server properties
     # -- Run server without TLS
-    server.insecure: false
+    server.insecure: true
     # -- Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from /
     server.basehref: /
     # -- Used if Argo CD is running behind reverse proxy under subpath different from /
@@ -1530,7 +1530,7 @@ server:
     tag: "" # defaults to global.image.tag
     # -- Image pull policy for the Argo CD server
     # @default -- `""` (defaults to global.image.imagePullPolicy)
-    imagePullPolicy: "" # IfNotPresent
+    imagePullPolicy: "IfNotPresent" # IfNotPresent
 
   # -- Secrets with credentials to pull images from a private registry
   # @default -- `[]` (defaults to global.imagePullSecrets)
@@ -1748,13 +1748,15 @@ server:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/tls/#tls-certificates-used-by-argocd-server
   certificate:
     # -- Deploy a Certificate resource (requires cert-manager)
-    enabled: false
+    enabled: true
     # -- The name of the Secret that will be automatically created and managed by this Certificate resource
     secretName: argocd-server-tls
     # -- Certificate primary domain (commonName)
-    domain: argocd.example.com
+    domain: argocd.master.com
     # -- Certificate Subject Alternate Names (SANs)
-    additionalHosts: []
+    additionalHosts:
+      - master
+      - localhost
     # -- The requested 'duration' (i.e. lifetime) of the certificate.
     # @default -- `""` (defaults to 2160h = 90d if not specified)
     ## Ref: https://cert-manager.io/docs/usage/certificate/#renewal
@@ -1767,11 +1769,11 @@ server:
     ## Ref: https://cert-manager.io/docs/concepts/issuer
     issuer:
       # -- Certificate issuer group. Set if using an external issuer. Eg. `cert-manager.io`
-      group: ""
+      group: "cert-manager.io"
       # -- Certificate issuer kind. Either `Issuer` or `ClusterIssuer`
-      kind: ""
+      kind: "Issuer"
       # -- Certificate issuer name. Eg. `letsencrypt`
-      name: ""
+      name: "ingress-nginx-self-signed-issuer"
     # Private key of the certificate
     privateKey:
       # -- Rotation policy of private key when certificate is re-issued. Either: `Never` or `Always`
@@ -1890,19 +1892,23 @@ server:
 
   ingress:
     # -- Enable an ingress resource for the Argo CD server
-    enabled: false
+    enabled: true
     # -- Additional ingress annotations
-    annotations: {}
+    annotations:
+        nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+        nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+        cert-manager.io/issuer: selfsigned - default - adds 'cert-manager.io/issuer' - cluster - adds 'cert-manager.io/cluster-issuer' - disabled - disables cert-manager annotations
     # -- Additional ingress labels
     labels: {}
     # -- Defines which ingress controller will implement the resource
-    ingressClassName: ""
+    ingressClassName: "nginx"
 
     # -- List of ingress hosts
     ## Argo Ingress.
     ## Hostnames must be provided if Ingress is enabled.
     ## Secrets must be manually created in the namespace
-    hosts: []
+    hosts:
+    - argocd.master.com
       # - argocd.example.com
 
     # -- List of ingress paths
@@ -1921,10 +1927,10 @@ server:
       #         name: use-annotation
 
     # -- Ingress TLS configuration
-    tls: []
-      # - secretName: your-certificate-name
-      #   hosts:
-      #     - argocd.example.com
+    tls:
+       - secretName: argocd-dashboard-certs
+         hosts:
+           - argocd.master.com
 
     # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
     https: false
