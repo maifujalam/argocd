@@ -16,4 +16,7 @@ at ingress layer[ Ref:- https://argo-cd.readthedocs.io/en/stable/operator-manual
 10. Uninstall argocd: `helm -n argo-cd uninstall argo-cd`
 11. Verify by port forwarding: kubectl port-forward service/argo-cd-argocd-server -n argo-cd 8080:443
 12. Access dashboard at: https://argocd.master.com:30443/
-13. Creds are:- username:admin password: $(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+13. Creds are: 
+    username: admin
+    password: kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d 
+    [By dashboard: arocd(namespace)-> argocd-initial-admin-secret(secrests)] 
