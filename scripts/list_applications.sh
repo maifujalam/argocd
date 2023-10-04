@@ -7,3 +7,4 @@ PASSWORD=$(kubectl -n argo-cd get secret argocd-initial-admin-secret -o jsonpath
 argocd login $ARGOCD_SERVER --grpc-web  --skip-test-tls --username $USERNAME --password $PASSWORD
 
 argocd app list
+argocd proj list

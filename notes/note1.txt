@@ -1,0 +1,7 @@
+1. Argocd reconcillation timeout,frequency for git SCM Pull.
+    a. Get configmap having reconcillation on pod: k -n argo-cd describe pod argo-cd-argocd-repo-server-6649787c78-vdddh | grep -i recon
+    b. Get pod reconciliation env variable from cm: k -n argo-cd exec -it pods/argo-cd-argocd-repo-server-6649787c78-vdddh -- env | grep -i recon
+    c. Get reconcillation time from cm : k -n argo-cd get configmaps argocd-cm -o yaml | grep recon
+    d. Set reconciliation time to cm: k -n argo-cd patch configmaps argocd-cm  --patch='{"data":{"timeout.reconciliation":"60s"}}'
+    e. Restart to make change effect: k -n argo-cd rollout restart deployment argo-cd-argocd-repo-server
+
