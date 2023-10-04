@@ -4,4 +4,5 @@
     c. Get reconcillation time from cm : k -n argo-cd get configmaps argocd-cm -o yaml | grep recon
     d. Set reconciliation time to cm: k -n argo-cd patch configmaps argocd-cm  --patch='{"data":{"timeout.reconciliation":"60s"}}'
     e. Restart to make change effect: k -n argo-cd rollout restart deployment argo-cd-argocd-repo-server
-
+2. Argocd application has to be deployed on namespace where argocd server is running,hare it is argo-cd.
+3. k delete -f argocd-app.yaml will only delete argocd app not the resources managed by this argocd app.
