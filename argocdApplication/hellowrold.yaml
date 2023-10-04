@@ -2,21 +2,21 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: helloworld
+  namespace: argo-cd  # Argo CD only listen for application type to the argocd installed namespace(argo-cd in this case).So its constant.
 spec:
   destination:
-    name: ''
     namespace: helloworld
-    server: 'https://kubernetes.default.svc'
-  source:
-    path: ''
-    repoURL: 'https://github.com/maifujalam/argocd.git'
-    targetRevision: ''
-    chart: 1.0.0
-  sources: []
+    server: https://kubernetes.default.svc
   project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: manifests/hello-kubernetes
+    repoURL: https://github.com/maifujalam/argocd.git
+    targetRevision: HEAD
   syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
+    automated: {}
     syncOptions:
-      - CreateNamespace=true
+    - Validate=false
+    - CreateNamespace=true
