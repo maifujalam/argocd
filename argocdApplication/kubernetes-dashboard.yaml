@@ -23,3 +23,8 @@ spec:
     syncOptions:
     - Validate=false
     - CreateNamespace=true
+  ignoreDifferences:
+  # for the specified json pointers
+  - kind: Secret
+    jqPathExpressions:
+    - '.data.csrf'
