@@ -49,7 +49,7 @@ spec:
           args:
             - --enable-insecure-login
             - --namespace={{ .Release.Namespace }}
-            - --enable-skip-login   # Enable skip to login
+            - --token-ttl=43200  # Does not logout for 12 hrs
           {{- with .Values.api.containers.args }}
           {{ toYaml . | nindent 12 }}
           {{- end }}
