@@ -6,3 +6,6 @@
     e. Restart to make change effect: k -n argo-cd rollout restart deployment argo-cd-argocd-repo-server
 2. Argocd application has to be deployed on namespace where argocd server is running,hare it is argo-cd.
 3. k delete -f argocd-app.yaml will only delete argocd app not the resources managed by this argocd app.
+4. To delete app and its resources: Click delete from argo UI and select(background or forground).If choose non-cascade delete only argo.
+   app will be deleted and not its resources.
+5.

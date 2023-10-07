@@ -27,7 +27,7 @@ service:
   port: 80
   externalPort: 443
 deployment:
-  replicaCount: 2
+  replicaCount: 1
   container:
     image:
       repository: "paulbouwer/hello-kubernetes"
