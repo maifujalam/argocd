@@ -9,7 +9,7 @@ at ingress layer[ Ref:- https://argo-cd.readthedocs.io/en/stable/operator-manual
    `helm repo add argo https://argoproj.github.io/argo-helm`
 4. Update helm repo: `helm repo update`
 5. Search for argocd: `helm search repo argo-cd`
-6. Pull argocd into manifests: `helm pull argo/argo-cd --version 5.46.4 --untar --untardir manifests`
+6. Pull argocd into manifests: `helm pull argo/argo-cd --version 5.46.7 --untar --untardir manifests`
 7. Update argo-cd/values.yaml
 8. Local render(Optional): helm template manifests/argo-cd --output-dir render
 9. Install argocd: `helm -n argo-cd install argo-cd manifests/argo-cd --create-namespace --namespace argo-cd -f manifests/argo-cd/values1.yaml`
