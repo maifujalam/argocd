@@ -2436,8 +2436,7 @@ repoServer:
   extraArgs: []
 
   # -- Environment variables to pass to repo server
-  env: []  #  This secret only give specific  s3 bucket list and get permission.
-  # Add AWS Secret access key nd secret key as env variables.
+  env: []  #  This secret only give specific  s3 bucket list and get permission.Add aws access and secret key.
 
   # -- envFrom to pass to repo server
   # @default -- `[]` (See [values.yaml])
