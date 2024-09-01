@@ -9,12 +9,11 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    chart: local-path-storage
+    chart: localpath
     helm:
       passCredentials: false
       valueFiles:
       - values.yaml
-    path: manifests/local-path-storage
     repoURL: https://public-helm-repository-20231023095000508500000001.s3.ap-south-1.amazonaws.com/
     targetRevision: 1.2.0
 
